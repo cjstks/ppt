@@ -1,0 +1,115 @@
+<!DOCTYPE html><html lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>정적 라우팅과 동적 라우팅의 개요</title>
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com"></script><style>
+        body {width: 1280px; min-height: 720px; font-family: Arial, sans-serif;
+            background-color: #f8f9fa;}
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            
+            position: relative;
+        }
+        .title {
+            background-color: #333333;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 0 0 30px 0;
+        }
+        .content-box {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .static-box {
+            border-left: 5px solid #4CAF50;
+        }
+        .dynamic-box {
+            border-left: 5px solid #FF9800;
+        }
+        .icon-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .footer {
+            background-color: #333333;
+            color: white;
+            padding: 8px 30px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+<div class="slide-container bg-gray-100 flex flex-col">
+<!-- Title -->
+<div class="title w-full text-2xl font-bold mb-6">
+            라우팅의 이해: 정적 라우팅과 동적 라우팅
+        </div>
+<!-- Main Content -->
+<div class="flex-grow px-10 py-4 flex flex-col">
+<!-- Introduction -->
+<div class="content-box p-6 mb-6">
+<p class="text-lg mb-2">
+<i class="fas fa-network-wired text-blue-600 mr-2"></i>
+                    라우팅은 데이터 패킷이 출발지에서 목적지까지 최적의 경로를 따라 이동하도록 안내하는 핵심적인 네트워크 프로세스입니다.
+                </p>
+<p class="text-lg font-semibold text-blue-700">
+                    정적 라우팅과 동적 라우팅은 상호 배타적이지 않습니다. 대신 대부분의 네트워크는 동적 라우팅 프로토콜과 정적 경로를 함께 사용합니다.
+                </p>
+</div>
+<!-- Static vs Dynamic Comparison -->
+<div class="flex space-x-6 mb-6">
+<!-- Static Routing -->
+<div class="content-box static-box flex-1 p-6">
+<div class="flex items-center mb-4">
+<div class="icon-circle bg-green-100 mr-4">
+<i class="fas fa-cogs text-4xl text-green-600"></i>
+</div>
+<h3 class="text-xl font-bold text-green-700">정적 라우팅</h3>
+</div>
+<ul class="list-disc pl-6 text-gray-700">
+<li class="mb-2">관리자에 의해 수동으로 경로가 설정됨</li>
+<li class="mb-2">구성의 복잡성은 네트워크 규모에 따라 증가</li>
+<li class="mb-2">토폴로지 변경에 대응하려면 관리자 개입이 필요</li>
+<li>특정 네트워크의 경로를 명시적으로 정의할 때 유용</li>
+</ul>
+</div>
+<!-- Dynamic Routing -->
+<div class="content-box dynamic-box flex-1 p-6">
+<div class="flex items-center mb-4">
+<div class="icon-circle bg-yellow-100 mr-4">
+<i class="fas fa-sync-alt text-4xl text-yellow-600"></i>
+</div>
+<h3 class="text-xl font-bold text-yellow-700">동적 라우팅</h3>
+</div>
+<ul class="list-disc pl-6 text-gray-700">
+<li class="mb-2">라우터들이 서로 통신하며 최적의 경로를 자동으로 학습</li>
+<li class="mb-2">네트워크 규모와 무관하게 구성의 복잡성은 일관됨</li>
+<li class="mb-2">토폴로지 변경에 자동으로 적응</li>
+<li>대규모 네트워크에 적합하며 확장성이 뛰어남</li>
+</ul>
+</div>
+</div>
+<!-- Bottom Note -->
+<div class="content-box p-4 bg-blue-50 border-l-4 border-blue-500">
+<p class="text-blue-800 flex items-center">
+<i class="fas fa-lightbulb text-blue-500 mr-3 text-xl"></i>
+<span>두 방식은 서로의 장점을 결합하여 네트워크의 효율성과 안정성을 향상시키며, 대부분의 현대 네트워크는 이 두 방식을 동시에 사용합니다.</span>
+</p>
+</div>
+</div>
+<!-- Footer -->
+<div class="footer w-full flex justify-between items-center">
+<div>2/10</div>
+<div>라우팅의 이해: 정적 라우팅과 동적 라우팅</div>
+</div>
+</div>
+
+</body></html>

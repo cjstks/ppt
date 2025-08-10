@@ -1,0 +1,139 @@
+<!DOCTYPE html><html lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>최적 경로 선택과 메트릭</title>
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"/>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="https://cdn.tailwindcss.com"></script><style>
+        body {width: 1280px; min-height: 720px; font-family: Arial, sans-serif;
+            background-color: #f8f9fa;}
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            
+            position: relative;
+        }
+        .title {
+            background-color: #333333;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 0 0 30px 0;
+        }
+        .content-box {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .rip-box {
+            border-left: 5px solid #4CAF50;
+        }
+        .ospf-box {
+            border-left: 5px solid #FF9800;
+        }
+        .eigrp-box {
+            border-left: 5px solid #2196F3;
+        }
+        .metric-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .footer {
+            background-color: #333333;
+            color: white;
+            padding: 8px 30px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+<div class="slide-container bg-gray-100 flex flex-col">
+<!-- Title -->
+<div class="title w-full text-2xl font-bold mb-6">
+            라우팅의 이해: 정적 라우팅과 동적 라우팅
+        </div>
+<!-- Main Content -->
+<div class="flex-grow px-10 py-4 flex flex-col">
+<!-- Introduction -->
+<div class="content-box p-5 mb-6">
+<p class="text-lg">
+<i class="fas fa-route text-blue-600 mr-2"></i>
+                    동적 라우팅 프로토콜은 각각 고유의 <span class="font-semibold">메트릭(Metric)</span>을 사용하여 최적 경로를 결정합니다. 
+                    메트릭은 목적지 네트워크까지의 거리를 측정하는 정량적 값으로, 가장 낮은 메트릭 값을 가진 경로가 최적 경로로 선택됩니다.
+                </p>
+</div>
+<!-- Metrics Comparison -->
+<div class="grid grid-cols-3 gap-5 mb-4">
+<!-- RIP -->
+<div class="content-box rip-box p-4">
+<div class="flex items-center mb-3">
+<div class="metric-icon bg-green-100 mr-3">
+<i class="fas fa-step-forward text-3xl text-green-600"></i>
+</div>
+<h3 class="text-xl font-bold text-green-700">RIP</h3>
+</div>
+<h4 class="font-semibold text-green-800 mb-2">메트릭: 홉 카운트 (Hop Count)</h4>
+<ul class="list-disc pl-6 text-gray-700 text-sm">
+<li class="mb-1">경로에 있는 각 라우터가 홉 카운트에 1개의 홉을 추가</li>
+<li class="mb-1">최대 15개의 홉까지만 허용됨</li>
+<li class="mb-1">도달 불가능한 네트워크: 16 이상의 홉</li>
+<li class="mb-1">단점: 실제 링크 품질(대역폭)을 반영하지 못함</li>
+<li>주기적으로 전체 라우팅 테이블을 브로드캐스트로 전송</li>
+</ul>
+</div>
+<!-- OSPF -->
+<div class="content-box ospf-box p-4">
+<div class="flex items-center mb-3">
+<div class="metric-icon bg-yellow-100 mr-3">
+<i class="fas fa-chart-line text-3xl text-yellow-600"></i>
+</div>
+<h3 class="text-xl font-bold text-yellow-700">OSPF</h3>
+</div>
+<h4 class="font-semibold text-yellow-800 mb-2">메트릭: 비용 (Cost)</h4>
+<ul class="list-disc pl-6 text-gray-700 text-sm">
+<li class="mb-1">출발지에서 목적지까지의 누적 대역폭을 기반으로 계산</li>
+<li class="mb-1">빠른 링크는(높은 대역폭) 비용이 적게 할당됨</li>
+<li class="mb-1">공식: 기준 대역폭 / 인터페이스 대역폭</li>
+<li class="mb-1">예: 100Mbps 링크의 비용은 100/100 = 1</li>
+<li>SPF(Shortest Path First) 알고리즘을 사용하여 최적 경로 계산</li>
+</ul>
+</div>
+<!-- EIGRP -->
+<div class="content-box eigrp-box p-4">
+<div class="flex items-center mb-3">
+<div class="metric-icon bg-blue-100 mr-3">
+<i class="fas fa-calculator text-3xl text-blue-600"></i>
+</div>
+<h3 class="text-xl font-bold text-blue-700">EIGRP</h3>
+</div>
+<h4 class="font-semibold text-blue-800 mb-2">메트릭: 복합 메트릭 (Composite Metric)</h4>
+<ul class="list-disc pl-6 text-gray-700 text-sm">
+<li class="mb-1">경로의 가장 느린 대역폭(Bandwidth)과 누적 지연(Delay) 값을 기반으로 계산</li>
+<li class="mb-1">부하(Load)와 신뢰도(Reliability)도 메트릭 계산에 포함할 수 있음</li>
+<li class="mb-1">K1: 대역폭, K2: 지연, K3: 부하, K4: 신뢰도</li>
+<li class="mb-1">K1=256, K2=8, K3=1, K4=1로 기본 설정</li>
+<li>DUAL(Diffusing Update Algorithm)을 통해 루프 없는 최적 경로 및 예비 경로 계산</li>
+</ul>
+</div>
+</div>
+<!-- Bottom Note -->
+<div class="content-box p-4 bg-blue-50 border-l-4 border-blue-500 mt-2">
+<p class="text-blue-800 flex items-center">
+<i class="fas fa-lightbulb text-blue-500 mr-3 text-xl"></i>
+<span>메트릭 값이 가장 낮은 경로가 최적 경로로 선택되며, 각 프로토콜은 서로 다른 방식으로 메트릭을 계산합니다. 
+                    이는 네트워크의 특성과 요구사항에 따라 다르게 최적 경로를 결정하게 됩니다.</span>
+</p>
+</div>
+</div>
+<!-- Footer -->
+<div class="footer w-full flex justify-between items-center">
+<div>9/10</div>
+<div>라우팅의 이해: 정적 라우팅과 동적 라우팅</div>
+</div>
+</div>
+
+</body></html>

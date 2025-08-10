@@ -1,0 +1,165 @@
+<!DOCTYPE html><html lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>부하 분산 기법</title>
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"/>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="https://cdn.tailwindcss.com"></script><style>
+        body {width: 1280px; min-height: 743px; font-family: Arial, sans-serif;
+            background-color: #f8f9fa;}
+        .slide-container {
+            width: 1280px;
+            min-height: 743px;
+            
+            position: relative;
+        }
+        .title {
+            background-color: #333333;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 0 0 30px 0;
+        }
+        .content-box {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .footer {
+            background-color: #333333;
+            color: white;
+            padding: 8px 30px;
+            font-size: 14px;
+        }
+        .load-balancing-diagram {
+            height: 180px;
+            position: relative;
+        }
+        .packet {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            position: absolute;
+            animation: movePacket 3s infinite;
+        }
+        @keyframes movePacket {
+            0% { transform: translateX(0) translateY(0); }
+            25% { transform: translateX(100px) translateY(40px); }
+            50% { transform: translateX(200px) translateY(0); }
+            75% { transform: translateX(300px) translateY(40px); }
+            100% { transform: translateX(400px) translateY(0); }
+        }
+        .packet-delay-1 {
+            animation-delay: 0.5s;
+        }
+        .packet-delay-2 {
+            animation-delay: 1s;
+        }
+        .packet-delay-3 {
+            animation-delay: 1.5s;
+        }
+        .packet-delay-4 {
+            animation-delay: 2s;
+        }
+    </style>
+</head>
+<body>
+<div class="slide-container bg-gray-100 flex flex-col">
+<!-- Title -->
+<div class="title w-full text-2xl font-bold mb-6">
+            라우팅의 이해: 정적 라우팅과 동적 라우팅
+        </div>
+<!-- Main Content -->
+<div class="flex-grow px-10 py-4 flex flex-col">
+<!-- Introduction -->
+<div class="content-box p-4 mb-4">
+<p class="text-lg">
+<i class="fas fa-balance-scale text-blue-600 mr-2"></i>
+                    라우팅 프로토콜은 단순히 경로를 학습하는 것을 넘어, 가장 효율적인 경로를 선택하고 네트워크 자원을 최적으로 활용하는 메커니즘을 포함합니다.
+                    이때 <span class="font-semibold">부하 분산</span> 기법이关键 역할을 합니다.
+                </p>
+</div>
+<div class="flex space-x-6 mb-4">
+<!-- Equal Cost Load Balancing -->
+<div class="content-box flex-1 p-4 border-t-4 border-green-500">
+<h3 class="text-xl font-bold text-green-700 mb-2">동일 비용 부하 분산</h3>
+<p class="text-sm mb-2">
+                        라우터에 동일한 메트릭 값을 가진 목적지에 대한 경로가 두 개 이상 있는 경우, 해당 경로들을 모두 사용하여 패킷을 분산 전송합니다.
+                    </p>
+<div class="load-balancing-diagram bg-gray-100 rounded-lg p-2 mb-2 relative">
+<div class="flex justify-between items-center h-full">
+<div class="w-16 h-16 bg-blue-500 rounded-lg flex items-center justify-center text-white font-bold">라우터</div>
+<div class="flex flex-col items-center">
+<div class="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center text-white text-xs mb-1">경로 1</div>
+<div class="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center text-white text-xs">경로 2</div>
+</div>
+<div class="w-16 h-16 bg-orange-500 rounded-lg flex items-center justify-center text-white font-bold">목적지</div>
+</div>
+<div class="packet packet-delay-1 bg-blue-200" style="top: 30px; left: 70px;"></div>
+<div class="packet packet-delay-2 bg-blue-200" style="top: 70px; left: 70px;"></div>
+<div class="packet packet-delay-3 bg-blue-200" style="top: 30px; left: 70px;"></div>
+<div class="packet packet-delay-4 bg-blue-200" style="top: 70px; left: 70px;"></div>
+</div>
+<ul class="list-disc pl-5 text-sm">
+<li>라우팅 테이블에 동일한 목적지 네트워크에 대해 여러 개의 출구 인터페이스 등록</li>
+<li>라우터는 여러 출구 인터페이스를 번갈아 가며 트래픽 전달</li>
+<li>동적 라우팅 프로토콜에서 자동으로 구현</li>
+</ul>
+</div>
+<!-- Unequal Cost Load Balancing -->
+<div class="content-box flex-1 p-4 border-t-4 border-orange-500">
+<h3 class="text-xl font-bold text-orange-700 mb-2">비동일 비용 부하 분산</h3>
+<p class="text-sm mb-2">
+                        메트릭 값이 서로 다른 경로 간에도 트래픽을 분산시키는 고급 기능입니다.
+                    </p>
+<div class="load-balancing-diagram bg-gray-100 rounded-lg p-2 mb-2 relative">
+<div class="flex justify-between items-center h-full">
+<div class="w-16 h-16 bg-blue-500 rounded-lg flex items-center justify-center text-white font-bold">라우터</div>
+<div class="flex flex-col items-center">
+<div class="w-12 h-12 bg-orange-600 rounded-lg flex items-center justify-center text-white text-xs mb-1">주 경로</div>
+<div class="w-12 h-12 bg-orange-400 rounded-lg flex items-center justify-center text-white text-xs">예비 경로</div>
+</div>
+<div class="w-16 h-16 bg-orange-500 rounded-lg flex items-center justify-center text-white font-bold">목적지</div>
+</div>
+<div class="packet packet-delay-1 bg-blue-200" style="top: 20px; left: 70px;"></div>
+<div class="packet packet-delay-2 bg-blue-200" style="top: 60px; left: 70px;"></div>
+<div class="packet packet-delay-3 bg-blue-200" style="top: 20px; left: 70px;"></div>
+<div class="packet packet-delay-4 bg-blue-200" style="top: 60px; left: 70px;"></div>
+</div>
+<ul class="list-disc pl-5 text-sm">
+<li>오직 EIGRP 프로토콜에서만 지원</li>
+<li>EIGRP는 DUAL 알고리즘을 통해 루프 없는 예비 경로(Feasible Successor) 미리 계산</li>
+<li>주 경로 외에도 성능이 약간 낮은 예비 경로에도 트래픽 분담</li>
+<li>네트워크 자원의 활용도 극대화</li>
+</ul>
+</div>
+</div>
+<!-- Benefits -->
+<div class="content-box p-4 bg-blue-50 border-l-4 border-blue-500">
+<h3 class="text-lg font-bold text-blue-700 mb-2 flex items-center">
+<i class="fas fa-star text-blue-500 mr-2"></i>부하 분산의 네트워크 성능 최적화 효과
+                </h3>
+<div class="flex">
+<div class="flex-1 flex items-center">
+<i class="fas fa-shield-alt text-2xl text-blue-600 mr-3"></i>
+<p class="text-sm">특정 경로에 트래픽이 집중되는 것을 방지</p>
+</div>
+<div class="flex-1 flex items-center">
+<i class="fas fa-tachometer-alt text-2xl text-blue-600 mr-3"></i>
+<p class="text-sm">네트워크의 효율성과 성능 향상</p>
+</div>
+<div class="flex-1 flex items-center">
+<i class="fas fa-puzzle-piece text-2xl text-blue-600 mr-3"></i>
+<p class="text-sm">네트워크 자원의 최적화된 활용</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<div class="footer w-full flex justify-between items-center">
+<div>10/10</div>
+<div>라우팅의 이해: 정적 라우팅과 동적 라우팅</div>
+</div>
+</div>
+
+</body></html>
